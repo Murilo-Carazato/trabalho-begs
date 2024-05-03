@@ -4,112 +4,131 @@
 
 using namespace std;
 
-struct Cidade {
+struct Cidade
+{
     int codigo;
-    string nome;
-    string UF;
+    char nome[35];
+    char UF[2];
 };
 
-struct Especialidade {
+struct Especialidade
+{
     int codigo;
-    string descricao;
+    char descricao[50];
 };
 
-struct Medico {
+struct Medico
+{
     int codigo;
-    string nome;
+    char nome[35];
     int codigo_especialidade;
-    string endereco;
-    string telefone;
+    char endereco[35];
+    char telefone[13];
     int codigo_cidade;
 };
 
-struct Paciente {
-    string CPF;
-    string nome;
-    string endereco;
+struct Paciente
+{
+    char CPF[11];
+    char nome[35];
+    char endereco[35];
     int codigo_cidade;
 };
 
-struct CID {
+struct CID
+{
     int codigo;
-    string descricao;
+    char descricao[50];
 };
 
-struct Medicamento {
+struct Medicamento
+{
     int codigo;
-    string descricao;
+    char descricao[50];
     int quant_estoque;
     int estoque_minimo;
     int estoque_maximo;
     float preco_unitario;
 };
 
-struct Consulta {
-    string cpf_paciente;
+struct Data
+{
+    int dia;
+    int mes;
+    int ano;
+};
+struct Consulta
+{
+    char cpf_paciente[11];
     int cod_medico;
-    string data;
-    string horario;
+    char horario[5];
+    Data data;
     int cod_CID;
     int cod_medicamento;
     int qtde_medicamento;
 };
 
-vector<Cidade> cidades;
-vector<Especialidade> especialidades;
-vector<Medico> medicos;
-vector<Paciente> pacientes;
-vector<CID> cids;
-vector<Medicamento> medicamentos;
-vector<Consulta> consultas;
-
-void lerDadosCidades() {
-    // Implemente a função para ler os dados das cidades
+void lerDadosCidades()
+{
 }
 
-void lerDadosEspecialidades() {
+void lerDadosEspecialidades()
+{
     // Implemente a função para ler os dados das especialidades médicas
 }
 
-void lerDadosCID() {
+void lerDadosCID()
+{
     // Implemente a função para ler os dados dos CIDs
 }
 
-void lerDadosMedicamentos() {
+void lerDadosMedicamentos()
+{
     // Implemente a função para ler os dados dos medicamentos
 }
 
-void incluirMedico() {
+void incluirMedico()
+{
     // Implemente a função para incluir um novo médico
 }
 
-void incluirPaciente() {
+void incluirPaciente()
+{
     // Implemente a função para incluir um novo paciente
 }
 
-void excluirPaciente() {
+void excluirPaciente()
+{
     // Implemente a função para excluir um paciente
 }
 
-void agendarConsulta() {
+void agendarConsulta()
+{
     // Implemente a função para agendar uma consulta
 }
 
-void consultarMedicamento() {
+void consultarMedicamento()
+{
     // Implemente a função para consultar os dados de um medicamento
 }
 
-void verificarEstoqueMinimo() {
+void verificarEstoqueMinimo()
+{
     // Implemente a função para verificar os medicamentos abaixo do estoque mínimo
 }
 
-void calcularValorTotalConsultas() {
+void calcularValorTotalConsultas()
+{
     // Implemente a função para calcular o valor total arrecadado com consultas
 }
 
-int main() {
+int main()
+{
+    setlocale(LC_ALL, "Portuguese");
+
     int opcao;
-    do {
+    do
+    {
         cout << "\nMenu:\n";
         cout << "1. Ler dados das cidades\n";
         cout << "2. Ler dados das especialidades médicas\n";
@@ -126,48 +145,49 @@ int main() {
         cout << "Escolha uma opção: ";
         cin >> opcao;
 
-        switch(opcao) {
-            case 1:
-                lerDadosCidades();
-                break;
-            case 2:
-                lerDadosEspecialidades();
-                break;
-            case 3:
-                lerDadosCID();
-                break;
-            case 4:
-                lerDadosMedicamentos();
-                break;
-            case 5:
-                incluirMedico();
-                break;
-            case 6:
-                incluirPaciente();
-                break;
-            case 7:
-                excluirPaciente();
-                break;
-            case 8:
-                agendarConsulta();
-                break;
-            case 9:
-                consultarMedicamento();
-                break;
-            case 10:
-                verificarEstoqueMinimo();
-                break;
-            case 11:
-                calcularValorTotalConsultas();
-                break;
-            case 0:
-                cout << "Saindo...\n";
-                break;
-            default:
-                cout << "Opção inválida!\n";
-                break;
+        switch (opcao)
+        {
+        case 1:
+            lerDadosCidades();
+            break;
+        case 2:
+            lerDadosEspecialidades();
+            break;
+        case 3:
+            lerDadosCID();
+            break;
+        case 4:
+            lerDadosMedicamentos();
+            break;
+        case 5:
+            incluirMedico();
+            break;
+        case 6:
+            incluirPaciente();
+            break;
+        case 7:
+            excluirPaciente();
+            break;
+        case 8:
+            agendarConsulta();
+            break;
+        case 9:
+            consultarMedicamento();
+            break;
+        case 10:
+            verificarEstoqueMinimo();
+            break;
+        case 11:
+            calcularValorTotalConsultas();
+            break;
+        case 0:
+            cout << "Saindo...\n";
+            break;
+        default:
+            cout << "Opção inválida!\n";
+            break;
         }
-    } while(opcao != 0);
+    } while (opcao != 0);
 
     return 0;
 }
