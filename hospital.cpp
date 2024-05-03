@@ -106,8 +106,26 @@ void incluirMedico(Medico medico[], int quantidade)
 {
     for (int i = 0; i < quantidade; i++)
     {
+        int codigo;
         cout << "Insira o código do médico: ";
-        cin >> medico[i].codigo;
+        cin >> codigo;
+        int i = 0;
+        for (; i < 10 && codigo > medico[i].codigo; i++)
+            ;
+        if (codigo == medico[i].codigo)
+        {
+            cout << "\n\n Médico já cadastrado";
+            cout << "\nCodigo do médico: " << medico[i].codigo;
+            cout << "\tNome: " << medico[i].nome;
+            cout << "\tEndereco: " << medico[i].endereco;
+            cout << "\tCódigo da cidade: " << medico[i].codigo_cidade;
+            cout << "\nCódigo da especialidade: " << medico[i].codigo_especialidade;
+            cout << endl;
+            cout << "Por favor, preencha novamente com outro código";
+            i--;
+        }
+        else
+            medico[i].codigo = codigo;
         cout << "Insira o nome: ";
         cin >> medico[i].nome;
         cout << "Insira o código da especialidade do(a) Dr(a) " << medico[i].nome << ": ";
