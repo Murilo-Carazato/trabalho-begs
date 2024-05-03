@@ -82,16 +82,53 @@ void lerDadosCID()
     // Implemente a função para ler os dados dos CIDs
 }
 
-void lerDadosMedicamentos()
+void imprimirMedicamentos(struct Medicamento Medicamento[], int contador)
 {
-    // Implemente a função para ler os dados dos medicamentos
+    for (int i = 0; i < contador; i++)
+    {
+
+        cout << "valores: " << Medicamento[i].codigo << endl;
+    }
+        cout << "qnt: " << contador << endl;
+    
 }
+
+void lerDadosMedicamentos(struct Medicamento Medicamento[], int &contador)
+{
+
+    int i = 0;
+    for (int saida = 1; i < 20 && saida != 0; i++)
+    {
+        cout << "\n\nCodigo do Medicamento " << (i + 1) << ": ";
+        cin >> Medicamento[i].codigo;
+        if (Medicamento[i].codigo > 0)
+        {
+            // cout << "Nome: ";
+            // cin >> cli[i].nome;
+            // cout << "Endereco: ";
+            // cin >> cli[i].endereco;
+            // cout << "Cidade: ";
+            // cin >> cli[i].cidade;
+            // cout << "Estado: ";
+            // cin >> cli[i].uf;
+        }
+        else
+            saida = 0;
+    }
+    contador = i - 1;
+
+    imprimirMedicamentos(Medicamento, contador);
+}
+
+
 
 void incluirMedico()
 {
     // Implemente a função para incluir um novo médico
 }
 
+void incluirPaciente()
+{
 void incluirPaciente()
 {
     // Implemente a função para incluir um novo paciente
@@ -124,7 +161,7 @@ void calcularValorTotalConsultas()
 
 int main()
 {
-    setlocale(LC_ALL, "Portuguese");
+    struct Medicamento medicamentos[2];
 
     int opcao;
     do
@@ -157,7 +194,8 @@ int main()
             lerDadosCID();
             break;
         case 4:
-            lerDadosMedicamentos();
+            int contadorMedicamentos;
+            lerDadosMedicamentos(medicamentos, contadorMedicamentos);
             break;
         case 5:
             incluirMedico();
