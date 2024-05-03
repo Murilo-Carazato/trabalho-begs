@@ -7,72 +7,69 @@ using namespace std;
 struct Cidade
 {
     int codigo;
-    string nome;
-    string UF;
+    char nome[35];
+    char UF[2];
 };
 
 struct Especialidade
 {
     int codigo;
-    string descricao;
+    char descricao[50];
 };
 
 struct Medico
 {
     int codigo;
-    string nome;
+    char nome[35];
     int codigo_especialidade;
-    string endereco;
-    string telefone;
+    char endereco[35];
+    char telefone[13];
     int codigo_cidade;
 };
 
 struct Paciente
 {
-    string CPF;
-    string nome;
-    string endereco;
+    char CPF[11];
+    char nome[35];
+    char endereco[35];
     int codigo_cidade;
 };
 
 struct CID
 {
     int codigo;
-    string descricao;
+    char descricao[50];
 };
 
 struct Medicamento
 {
     int codigo;
-    string descricao;
+    char descricao[50];
     int quant_estoque;
     int estoque_minimo;
     int estoque_maximo;
     float preco_unitario;
 };
 
+struct Data
+{
+    int dia;
+    int mes;
+    int ano;
+};
 struct Consulta
 {
-    string cpf_paciente;
+    char cpf_paciente[11];
     int cod_medico;
-    string data;
-    string horario;
+    char horario[5];
+    Data data;
     int cod_CID;
     int cod_medicamento;
     int qtde_medicamento;
 };
 
-vector<Cidade> cidades;
-vector<Especialidade> especialidades;
-vector<Medico> medicos;
-vector<Paciente> pacientes;
-vector<CID> cids;
-vector<Medicamento> medicamentos;
-vector<Consulta> consultas;
-
 void lerDadosCidades()
 {
-    // Implemente a função para ler os dados das cidades
 }
 
 void lerDadosEspecialidades()
@@ -130,6 +127,8 @@ void incluirMedico()
     // Implemente a função para incluir um novo médico
 }
 
+void incluirPaciente()
+{
 void incluirPaciente()
 {
     // Implemente a função para incluir um novo paciente
