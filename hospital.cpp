@@ -23,7 +23,7 @@ struct Medico
     char nome[35];
     int codigo_especialidade;
     char endereco[35];
-    char telefone[13];
+    char telefone[11];
     int codigo_cidade;
 };
 
@@ -76,7 +76,7 @@ void lerDadosCidades(Cidade cidade[], int quantidade)
         cin >> cidade[i].codigo;
         cout << "Insira o nome da cidade: ";
         cin >> cidade[i].nome;
-        cout << "Insira a Unidade Federal da cidade (Siglas): ";
+        cout << "Insira a Unidade Federal da cidade (em siglas): ";
         cin >> cidade[i].UF;
     }
 }
@@ -102,9 +102,46 @@ void lerDadosMedicamentos()
     // Implemente a função para ler os dados dos medicamentos
 }
 
-void incluirMedico()
+void incluirMedico(Medico medico[], int quantidade)
 {
-    // Implemente a função para incluir um novo médico
+    for (int i = 0; i < quantidade; i++)
+    {
+        int codigo;
+        cout << "Insira o código do médico: ";
+        cin >> codigo;
+
+        // Busca serial do codigo do médico
+        int i = 0;
+        for (; i < 10 && codigo > medico[i].codigo; i++)
+            ;
+        if (codigo == medico[i].codigo)
+        {
+            cout << "\n\n Médico já cadastrado";
+            cout << "\nCodigo do médico: " << medico[i].codigo;
+            cout << "\tNome: " << medico[i].nome;
+            cout << "\tEndereco: " << medico[i].endereco;
+            cout << "\tCódigo da cidade: " << medico[i].codigo_cidade;
+            cout << "\nCódigo da especialidade: " << medico[i].codigo_especialidade;
+            cout << endl;
+            cout << "Por favor, preencha novamente com outro código";
+            i--;
+        }
+        //Se e somente se não existir o código digitado, um novo médico sera adicionado
+        else
+        {
+            medico[i].codigo = codigo;
+            cout << "Insira o nome: ";
+            cin >> medico[i].nome;
+            cout << "Insira o código da especialidade do(a) Dr(a) " << medico[i].nome << ": ";
+            cin >> medico[i].codigo_especialidade;
+            cout << "Insira o endereço: ";
+            cin >> medico[i].endereco;
+            cout << "Insira o telefone (seguindo o padrão: 18997885522): ";
+            cin >> medico[i].telefone;
+            cout << "Insira o código da cidade onde reside: ";
+            cin >> medico[i].codigo_cidade;
+        }
+    }
 }
 
 void incluirPaciente()
@@ -144,6 +181,7 @@ int main()
     int opcao, quantidade;
     Cidade *cidade;
     Especialidade *especialidade;
+    Medico *medico;
     do
     {
         cout << "\nMenu:\n";
@@ -183,7 +221,10 @@ int main()
             lerDadosMedicamentos();
             break;
         case 5:
-            incluirMedico();
+            system("cls");
+            cout << "Quantos médicos deseja inserir? ";
+            cin >> quantidade;
+            incluirMedico(medico, quantidade);
             break;
         case 6:
             incluirPaciente();
