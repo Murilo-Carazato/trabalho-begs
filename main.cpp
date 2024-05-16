@@ -239,51 +239,38 @@ void verificarSeCodigoRepetiu(struct Medico S[], int contadorS, struct Medico T[
     }
 }
 
-void incluirMedico(struct Medico S[], int contadorS, struct Medico T[], int contadorT, struct Medico A[], int &contadorA)
+void incluirMedico(Medico S[], int contadorS, Medico T[], int contadorT, Medico A[], int &contadorA)
 {
-    int i = 0, j = 0, k = 0; // i (contador de S) j (contador de T) k (contador de A)
-    for (; i < contadorS && j < contadorT; k++)
+    int i = 0, j = 0, k = 0;
+    while (i < contadorS && j < contadorT)
     {
         if (S[i].codigo < T[j].codigo)
         {
             A[k].codigo = S[i].codigo;
-            // strcpy (A[k].nome,S[i].nome);
-            // strcpy (A[k].endereco,S[i].endereco);
-            // strcpy (A[k].cidade,S[i].cidade);
-            // strcpy (A[k].uf,S[i].uf);
             i++;
         }
         else
         {
             A[k].codigo = T[j].codigo;
-            // strcpy (A[k].nome,T[j].nome);
-            // strcpy (A[k].endereco,T[j].endereco);
-            // strcpy (A[k].cidade,T[j].cidade);
-            // strcpy (A[k].uf,T[j].uf);
             j++;
         }
-        while (i < contadorS)
-        {
-            A[k].codigo = S[i].codigo;
-            // strcpy (A[k].nome,S[i].nome);
-            // strcpy (A[k].endereco,S[i].endereco);
-            // strcpy (A[k].cidade,S[i].cidade);
-            // strcpy (A[k].uf,S[i].uf);
-            i++;
-            k++;
-        }
-        while (j < contadorT)
-        {
-            A[k].codigo = T[j].codigo;
-            // strcpy (A[k].nome,T[j].nome);
-            // strcpy (A[k].endereco,T[j].endereco);
-            // strcpy (A[k].cidade,T[j].cidade);
-            // strcpy (A[k].uf,T[j].uf);
-            j++;
-            k++;
-        }
-        contadorA = k;
+        k++;
     }
+    // Se ainda houver elementos em S, copia-os para A
+    while (i < contadorS)
+    {
+        A[k].codigo = S[i].codigo;
+        i++;
+        k++;
+    }
+    // Se ainda houver elementos em T, copia-os para A
+    while (j < contadorT)
+    {
+        A[k].codigo = T[j].codigo;
+        j++;
+        k++;
+    }
+    contadorA = k;
 }
 
 void incluirPaciente(struct Paciente S[], int contadorS, struct Paciente T[], int contadorT, struct Paciente A[], int &contadorA)
