@@ -361,6 +361,18 @@ void calcularValorTotalConsultas()
 void buscarCidade(struct Cidade)
 {
 }
+void buscarEspecialidade(struct Especialidade especialidade[], int cod){
+    int i = 0;
+    for (; i < 10 && cod > especialidade[i].codigo; i++);
+    if (cod == especialidade[i].codigo){
+        cout << "\n\n Especialidade encontrada";
+        cout << "\nCodigo da especialidade: " << especialidade[i].codigo;
+        cout << "\nDescrição: " << especialidade[i].descricao;
+    }
+    else
+        cout << "\n\n Especialidade não encontrada";
+    getch();
+}
 int main()
 {
     setlocale(LC_ALL, "Portuguese");
@@ -390,6 +402,7 @@ int main()
         cout << "11. Calcular valor total arrecadado com consultas\n";
         cout << "12. Ler dados dos pacientes\n";
         cout << "13. Buscar uma cidade";
+        cout << "14. Buscar uma especialidade";
         cout << "0. Sair\n";
         cout << "Escolha uma opção: ";
         cin >> opcao;
@@ -461,6 +474,8 @@ int main()
             break;
         case 13:
             buscarCidade();
+        case 14:
+            buscarEspecialidade();
         case 0:
             cout << "Saindo...\n";
             break;
