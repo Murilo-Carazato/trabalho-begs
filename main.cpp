@@ -198,7 +198,7 @@ void lerDadosMedicos(struct Medico Medico[], int &contador)
             saida = 0;
     }
     contador = i - 1;
-
+//
     // imprimirEstruturaPaciente(Paciente, contador);
 }
 
