@@ -164,6 +164,54 @@ void lerDadosMedicamentos(struct Medicamento Medicamento[], int &contador)
     // imprimirMedicamento(Medicamento, contador);
 }
 
+void verificarSeCPFRepetiuNosArrays(struct Paciente S[], int contadorS, struct Paciente T[], int contadorT)
+{
+    for (int i = 0; i < contadorS; i++)
+    {
+        for (int j = 0; j < contadorT; j++)
+        {
+            if (S[i].CPF == T[j].CPF)
+            {
+                cout << "CPF repetido: " << S[i].CPF << endl;
+            }
+        }
+    }
+}
+
+void verificarSeCodigoMedicoRepetiuNosArrays(struct Medico S[], int contadorS, struct Medico T[], int contadorT)
+{
+
+    int vet[10];
+    int vetf[10];
+
+    for (int i = 0; i < contadorS; i++)
+    {
+        for (int j = 0; j < contadorT; j++)
+        {
+            if (S[i].codigo == T[j].codigo)
+            {
+                cout << "Código repetido no arquivo: " << S[i].codigo << endl;
+                vet[i] = S[i].codigo;
+            }
+        }
+    }
+}
+
+bool verificarSeCPFPacienteRepetiu(struct Paciente Paciente[], string cpf, int index)
+{
+
+    for (int i = 0; i < index; i++)
+    {
+        if (cpf == Paciente[i].CPF)
+        {
+            cout << "\n\n Paciente Encontrado";
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void lerDadosPacientes(struct Paciente Paciente[], int &contador)
 {
 
@@ -174,29 +222,37 @@ void lerDadosPacientes(struct Paciente Paciente[], int &contador)
         cin >> Paciente[i].codigo;
         if (Paciente[i].codigo > 0)
         {
+            cout << "\n\n CPF do Paciente " << (i + 1) << ": ";
+            cin >> Paciente[i].CPF;
+            if (!verificarSeCPFPacienteRepetiu(Paciente, Paciente[i].CPF, i))
+            {
+                cout << "CPF n repetiu: ";
+            }
+            else
+            {
+                i--;
+            }
         }
         else
             saida = 0;
     }
     contador = i - 1;
-
-    // imprimirEstruturaPaciente(Paciente, contador);
 }
 
-bool verificarSeCodigoMedicoRepetiu(struct Medico medico[], int cod, int index)
+bool verificarSeCodigoMedicoRepetiu(struct Medico Medico[], int cod, int index)
 {
 
     for (int i = 0; i < index; i++)
     {
-        if (cod == medico[i].codigo)
+        if (cod == Medico[i].codigo)
         {
             cout << "\n\n Médico Encontrado";
-            cout << "\nCodigo: " << medico[i].codigo;
-            cout << "\tNome: " << medico[i].nome;
-            cout << "\tCodigo da especialidade: " << medico[i].codigo_especialidade;
-            cout << "\tEndereco: " << medico[i].endereco;
-            cout << "\tTelefone: " << medico[i].telefone;
-            cout << "\tCodigo da cidade: " << medico[i].codigo_cidade;
+            cout << "\nCodigo: " << Medico[i].codigo;
+            cout << "\tNome: " << Medico[i].nome;
+            cout << "\tCodigo da especialidade: " << Medico[i].codigo_especialidade;
+            cout << "\tEndereco: " << Medico[i].endereco;
+            cout << "\tTelefone: " << Medico[i].telefone;
+            cout << "\tCodigo da cidade: " << Medico[i].codigo_cidade;
             return true;
         }
     }
@@ -217,16 +273,21 @@ void lerDadosMedicos(struct Medico medico[], int &contador)
         {
             if (!verificarSeCodigoMedicoRepetiu(medico, medico[i].codigo, i))
             {
-                cout << "Nome do médico: ";
-                cin >> medico[i].nome;
-                cout << "Codigo da especialidade: ";
-                cin >> medico[i].codigo_especialidade;
-                cout << "Endereco: ";
-                cin >> medico[i].endereco;
-                cout << "Telefone: ";
-                cin >> medico[i].telefone;
-                cout << "Codigo da cidade: ";
-                cin >> medico[i].codigo_cidade;
+                cout << "codigo n repetiu: ";
+                // cout << "Nome do médico: ";
+                // cin >> medico[i].nome;
+                // cout << "Codigo da especialidade: ";
+                // cin >> medico[i].codigo_especialidade;
+                // cout << "Endereco: ";
+                // cin >> medico[i].endereco;
+                // cout << "Telefone: ";
+                // cin >> medico[i].telefone;
+                // cout << "Codigo da cidade: ";
+                // cin >> medico[i].codigo_cidade;
+            }
+            else
+            {
+                i--;
             }
         }
         else
@@ -235,21 +296,6 @@ void lerDadosMedicos(struct Medico medico[], int &contador)
     contador = i - 1;
 
     // imprimirEstruturaPaciente(Paciente, contador);
-}
-
-// ERRADO, FAZER COM BUSCA BINARIA OU SERIAL
-void verificarSeCPFRepetiu(struct Paciente S[], int contadorS, struct Paciente T[], int contadorT)
-{
-    for (int i = 0; i < contadorS; i++)
-    {
-        for (int j = 0; j < contadorT; j++)
-        {
-            if (S[i].CPF == T[j].CPF)
-            {
-                cout << "CPF repetido: " << S[i].CPF << endl;
-            }
-        }
-    }
 }
 
 void incluirMedico(Medico S[], int contadorS, Medico T[], int contadorT, Medico A[], int &contadorA)
@@ -269,14 +315,14 @@ void incluirMedico(Medico S[], int contadorS, Medico T[], int contadorT, Medico 
         }
         k++;
     }
-    // Se ainda houver elementos em S, copia-os para A
+
     while (i < contadorS)
     {
         A[k].codigo = S[i].codigo;
         i++;
         k++;
     }
-    // Se ainda houver elementos em T, copia-os para A
+
     while (j < contadorT)
     {
         A[k].codigo = T[j].codigo;
@@ -426,13 +472,13 @@ int main()
             system("cls");
             cout << "Quantas cidades deseja inserir? ";
             cin >> quantidade;
-            lerDadosCidades(cidade, quantidade);
+            lerDadosCidades(cidades, quantidade);
             break;
         case 2:
             system("cls");
             cout << "Quantas especialidades deseja inserir? ";
             cin >> quantidade;
-            lerDadosEspecialidades(especialidade, quantidade);
+            lerDadosEspecialidades(especialidades, quantidade);
             break;
         case 3:
             int contadorCID;
@@ -445,11 +491,9 @@ int main()
         case 5:
             int contadorSMedico, contadorTMedico, contadorAMedico;
             lerDadosMedicos(arqSMedico, contadorSMedico);
-            // imprimirEstruturaMedico(arqSMedico, contadorSMedico);
             lerDadosMedicos(arqTMedico, contadorTMedico);
-            // imprimirEstruturaMedico(arqTMedico, contadorTMedico);
 
-            verificarSeCodigoRepetiu(arqSMedico, contadorSMedico, arqTMedico, contadorTMedico);
+            verificarSeCodigoMedicoRepetiuNosArrays(arqSMedico, contadorSMedico, arqTMedico, contadorTMedico);
 
             incluirMedico(arqSMedico, contadorSMedico, arqTMedico, contadorTMedico, arqAMedico, contadorAMedico);
             imprimirEstruturaMedico(arqAMedico, contadorAMedico);
@@ -457,11 +501,7 @@ int main()
         case 6:
             int contadorS, contadorT, contadorA;
             lerDadosPacientes(arqSPaciente, contadorS);
-            // imprimirEstruturaPaciente(arqS, contadorS);
             lerDadosPacientes(arqTPaciente, contadorT);
-            // imprimirEstruturaPaciente(arqT, contadorT);
-
-            verificarSeCPFRepetiu(arqSPaciente, contadorS, arqTPaciente, contadorT);
 
             incluirPaciente(arqSPaciente, contadorS, arqTPaciente, contadorT, arqAPaciente, contadorA);
             imprimirEstruturaPaciente(arqAPaciente, contadorA);
@@ -486,10 +526,10 @@ int main()
             lerDadosPacientes(pacientes, contadorPacientes);
             break;
         case 13:
-            int codigo;
-            cout << "Insira o código da cidade que deseja buscar";
-            cin >> codigo;
-            buscarCidade(cidades, codigo);
+            // int codigo;
+            // cout << "Insira o código da cidade que deseja buscar";
+            // cin >> codigo;
+            // buscarCidade(cidades, codigo);
         case 14:
             int codigo;
             cout << "Insira o código da especialidade que deseja buscar";
