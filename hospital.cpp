@@ -183,6 +183,27 @@ void lerDadosPacientes(struct Paciente Paciente[], int &contador)
     // imprimirEstruturaPaciente(Paciente, contador);
 }
 
+bool verificarSeCodigoMedicoRepetiu(struct Medico medico[], int cod, int index)
+{
+
+    for (int i = 0; i < index; i++)
+    {
+        if (cod == medico[i].codigo)
+        {
+            cout << "\n\n Médico Encontrado";
+            cout << "\nCodigo: " << medico[i].codigo;
+            cout << "\tNome: " << medico[i].nome;
+            cout << "\tCodigo da especialidade: " << medico[i].codigo_especialidade;
+            cout << "\tEndereco: " << medico[i].endereco;
+            cout << "\tTelefone: " << medico[i].telefone;
+            cout << "\tCodigo da cidade: " << medico[i].codigo_cidade;
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void lerDadosMedicos(struct Medico medico[], int &contador)
 {
 
@@ -229,28 +250,6 @@ void verificarSeCPFRepetiu(struct Paciente S[], int contadorS, struct Paciente T
             }
         }
     }
-}
-
-bool verificarSeCodigoMedicoRepetiu(struct Medico medico[], int cod, int index)
-{
-
-    for (int i = 0; i < index; i++)
-    {
-        if (cod == medico[i].codigo)
-        {
-            cout << "\n\n Médico Encontrado";
-            cout << "\nCodigo: " << medico[i].codigo;
-            cout << "\tNome: " << medico[i].nome;
-            cout << "\tCodigo da especialidade: " << medico[i].codigo_especialidade;
-            cout << "\tEndereco: " << medico[i].endereco;
-            cout << "\tTelefone: " << medico[i].telefone;
-            cout << "\tCodigo da cidade: " << medico[i].codigo_cidade;
-            return true;
-        }
-    }
-
-    else return false;
-    getch();
 }
 
 void incluirMedico(Medico S[], int contadorS, Medico T[], int contadorT, Medico A[], int &contadorA)
@@ -371,7 +370,6 @@ void buscarCidade(struct Cidade cidade[], int cod)
     }
     else
         cout << "\n\n Especialidade não encontrada";
-    getch();
 }
 
 void buscarEspecialidade(struct Especialidade especialidade[], int cod)
@@ -387,7 +385,6 @@ void buscarEspecialidade(struct Especialidade especialidade[], int cod)
     }
     else
         cout << "\n\n Especialidade não encontrada";
-    getch();
 }
 int main()
 {
@@ -399,8 +396,8 @@ int main()
     struct Medico medicos[20], arqSMedico[20], arqTMedico[20], arqAMedico[25];
 
     int opcao, quantidade;
-    Cidade *cidade;
-    Especialidade *especialidade;
+    struct Cidade cidades[20];
+    struct Especialidade especialidades[20];
 
     do
     {
@@ -489,9 +486,15 @@ int main()
             lerDadosPacientes(pacientes, contadorPacientes);
             break;
         case 13:
-            buscarCidade();
+            int codigo;
+            cout << "Insira o código da cidade que deseja buscar";
+            cin >> codigo;
+            buscarCidade(cidades, codigo);
         case 14:
-            buscarEspecialidade();
+            int codigo;
+            cout << "Insira o código da especialidade que deseja buscar";
+            cin >> codigo;
+            buscarEspecialidade(especialidades, codigo);
         case 0:
             cout << "Saindo...\n";
             break;
