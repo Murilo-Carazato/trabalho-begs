@@ -194,7 +194,7 @@ void lerDadosMedicos(struct Medico medico[], int &contador)
 
         if (medico[i].codigo > 0)
         {
-            if (!verificarSeCodigoMedicoRepetiu(medico, medico[i].codigo))
+            if (!verificarSeCodigoMedicoRepetiu(medico, medico[i].codigo, i))
             {
                 cout << "Nome do médico: ";
                 cin >> medico[i].nome;
@@ -231,10 +231,10 @@ void verificarSeCPFRepetiu(struct Paciente S[], int contadorS, struct Paciente T
     }
 }
 
-bool verificarSeCodigoMedicoRepetiu(struct Medico medico[], int cod)
+bool verificarSeCodigoMedicoRepetiu(struct Medico medico[], int cod, int index)
 {
-    int i = 0;
-    for (; i < 10 && cod > medico[i].codigo; i++)
+
+    for (int i = 0; i < index; i++)
     {
         if (cod == medico[i].codigo)
         {
@@ -358,13 +358,29 @@ void calcularValorTotalConsultas()
 {
     // Implemente a função para calcular o valor total arrecadado com consultas
 }
-void buscarCidade(struct Cidade)
+void buscarCidade(struct Cidade cidade[], int cod)
 {
-}
-void buscarEspecialidade(struct Especialidade especialidade[], int cod){
     int i = 0;
-    for (; i < 10 && cod > especialidade[i].codigo; i++);
-    if (cod == especialidade[i].codigo){
+    for (; i < 10 && cod > cidade[i].codigo; i++)
+        ;
+    if (cod == cidade[i].codigo)
+    {
+        cout << "\n\n Cidade encontrada";
+        cout << "\nNome da cidade: " << cidade[i].nome;
+        cout << "\nUF: " << cidade[i].UF;
+    }
+    else
+        cout << "\n\n Especialidade não encontrada";
+    getch();
+}
+
+void buscarEspecialidade(struct Especialidade especialidade[], int cod)
+{
+    int i = 0;
+    for (; i < 10 && cod > especialidade[i].codigo; i++)
+        ;
+    if (cod == especialidade[i].codigo)
+    {
         cout << "\n\n Especialidade encontrada";
         cout << "\nCodigo da especialidade: " << especialidade[i].codigo;
         cout << "\nDescrição: " << especialidade[i].descricao;
