@@ -141,13 +141,14 @@ void lerDadosCID(struct CID CID[], int &contador)
 //         cout << "qnt: " << contador << endl;
 // }
 
-void imprimirEstruturaPaciente(struct Paciente Paciente[], int contador)
+void imprimirEstruturaPaciente(struct Paciente paciente[], int contador)
 {
     cout << "\n\nLista dos Registros" << endl;
     for (int i = 0; i < contador; i++)
     {
 
-        cout << "valores: " << Paciente[i].codigo << endl;
+        cout << "codigo: " << paciente[i].codigo << endl;
+        cout << "CPF: " << paciente[i].CPF << endl;
     }
     cout << "qnt: " << contador << endl;
 }
@@ -253,7 +254,7 @@ bool verificarSeCPFPacienteRepetiu(struct Paciente Paciente[], string cpf, int i
 
     for (int i = 0; i < index; i++)
     {
-        if (cpf == Paciente[i].CPF)
+        if (strcmp(Paciente[i].CPF, cpf) == 0)
         {
             cout << "\n\n Paciente Encontrado";
             return true;
@@ -263,27 +264,29 @@ bool verificarSeCPFPacienteRepetiu(struct Paciente Paciente[], string cpf, int i
     return false;
 }
 
-void lerDadosPacientes(struct Paciente Paciente[], int &contador)
+void lerDadosPacientes(struct Paciente paciente[], int &contador)
 {
 
     int i = 0;
+    char cpf[11];
     for (int saida = 1; i < 20 && saida != 0; i++)
     {
-        cout << "\n\nCodigo do Paciente " << (i + 1) << ": ";
-        cin >> Paciente[i].codigo;
-        if (Paciente[i].codigo > 0)
+        cout << "\n\nCodigo do paciente " << (i + 1) << ": ";
+        cin >> paciente[i].codigo;
+        if (paciente[i].codigo > 0)
         {
             cout << "\n CPF: ";
-            cin >> Paciente[i].CPF;
-            if (!verificarSeCPFPacienteRepetiu(Paciente, Paciente[i].CPF, i))
+            cin >> cpf;
+            if (!verificarSeCPFPacienteRepetiu(paciente, cpf, i))
             {
+                strcpy(paciente[i].CPF, cpf);
                 cout << "CPF n repetiu: ";
                 cout << "\nNome: ";
-                cin >> Paciente[i].nome;
+                cin >> paciente[i].nome;
                 cout << "\nCodigo da cidade: ";
-                cin >> Paciente[i].codigo_cidade;
+                cin >> paciente[i].codigo_cidade;
                 cout << "\nEndereco: ";
-                cin >> Paciente[i].endereco;
+                cin >> paciente[i].endereco;
             }
             else
             {
@@ -505,39 +508,41 @@ void buscarCidade(struct Cidade cidade[], int cod)
     {
         cout << "\n\n Cidade encontrada";
         cout << "\nNome da cidade: " << cidade[i].nome;
-        cout << "\nUF: " << cidade[i].UF;
+        cout << "\nUF: " << cidade[i].UF << endl;
     }
     else
-        cout << "\n\n Especialidade não encontrada";
+        cout << "\n\n Cidade não encontrada";
 }
 
-void buscarPacientePeloCpf(struct Paciente paciente[], Cidade cidade[], char cpf[11], int contCidade, int contPaciente)
+void buscarPacientePeloCpf(struct Paciente paciente[], Cidade cidade[], int &contCidade, int &contPaciente)
 {
+    char cpf[11];
     int i = 0;
-    cout << "contPaciente: " << contPaciente;
+    cout << "Insira o CPF que deseja buscar: ";
+    cin >> cpf;
+    cout << "\ncontPaciente: " << contPaciente;
     cout << "\ncontCidade: " << contCidade;
+
     for (; i < contPaciente; i++)
+        ;
+    if (strcmp(paciente[i].CPF, cpf) == 0) // Compara se chars são iguais
     {
-        cout << "\npaciente[i].CPF = " << paciente[i].CPF << endl;
-        if (cpf == paciente[i].CPF) // Compara se chars são iguais
+        cout << "\n\n Paciente encontrado\n";
+        cout << "\tCodigo: " << paciente[i].codigo;
+        cout << "\tNome: " << paciente[i].nome;
+        for (int j = 0; j < contCidade; j++)
         {
-            cout << "\n\n Paciente encontrado\n";
-            cout << "\tCodigo: " << paciente[i].codigo;
-            cout << "\tNome: " << paciente[i].nome;
-            for (int j = 0; j < contCidade; j++)
+            if (paciente[i].codigo_cidade == cidade[j].codigo)
             {
-                if (paciente[i].codigo_cidade == cidade[j].codigo)
-                {
-                    cout << "\tCidade: " << cidade[j].nome;
-                    cout << "\tUF: " << cidade[j].UF;
-                    j = contCidade;
-                    i = contPaciente;
-                }
+                cout << "\tCidade: " << cidade[j].nome;
+                cout << "\tUF: " << cidade[j].UF;
+                j = contCidade;
+                i = contPaciente;
             }
         }
-        else
-            cout << "\n\n Paciente com CPF: " << cpf << " não existe.\n";
     }
+    else
+        cout << "\n\n Paciente com CPF: " << cpf << " não existe.\n";
 }
 
 void buscarEspecialidade(struct Especialidade especialidade[], int cod)
@@ -594,9 +599,8 @@ int main()
         {
         case 1:
             system("cls");
-            cout << "Quantas cidades deseja inserir? ";
-            cin >> quantidade;
-            lerDadosCidades(cidades, quantidade);
+            int contadorCidades;
+            lerDadosCidades(cidades, contadorCidades);
             break;
         case 2:
             system("cls");
@@ -631,7 +635,6 @@ int main()
             break;
         case 7:
             int arqT[20];
-            cout << "arqT[contadorT-1] = " << arqT[0 - 1];
             for (contadorT = 0; contadorT < 20 && arqT[contadorT - 1] >= 0; contadorT++)
             {
                 cout << "\nInforme o codigo do paciente a ser excluido (finalize com -1): ";
@@ -653,15 +656,12 @@ int main()
             calcularValorTotalConsultas();
             break;
         case 12:
-            int contadorPacientes;
-            lerDadosPacientes(pacientes, contadorPacientes);
+            int codigoCidade;
+            cout << "Insira o código da cidade que deseja buscar: ";
+            cin >> codigoCidade;
+            buscarCidade(cidades, codigoCidade);
             break;
         case 13:
-            // int codigo;
-            // cout << "Insira o código da cidade que deseja buscar";
-            // cin >> codigo;
-            // buscarCidade(cidades, codigo);
-        case 14:
             int codigo;
             cout << "Insira o código da especialidade que deseja buscar";
             cin >> codigo;
@@ -672,10 +672,10 @@ int main()
             cin >> pesquisaCPf;
             buscarPacientePeloCpf(pacientes, cidades, pesquisaCPf, quantidade, contadorPacientes);
         case 0:
-            cout << "Saindo...\n";
+            cout << "\nSaindo...\n";
             break;
         default:
-            cout << "Opção inválida!\n";
+            cout << "\nOpção inválida!\n";
             break;
         }
     } while (opcao != 0);
