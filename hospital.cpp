@@ -181,19 +181,53 @@ void verificarSeCPFRepetiuNosArrays(struct Paciente S[], int contadorS, struct P
 void verificarSeCodigoMedicoRepetiuNosArrays(struct Medico S[], int contadorS, struct Medico T[], int contadorT)
 {
 
-    int vet[10];
-    int vetf[10];
+    int vetUnicos[20]; // Array para guardar os códigos únicos dos dois arrays
+    int indexUnicos = 0;
+    
 
+    bool repetido;
+
+    // Verificar códigos únicos em S
     for (int i = 0; i < contadorS; i++)
     {
+        repetido = false;
         for (int j = 0; j < contadorT; j++)
         {
             if (S[i].codigo == T[j].codigo)
             {
-                cout << "Código repetido no arquivo: " << S[i].codigo << endl;
-                vet[i] = S[i].codigo;
+                repetido = true;
+                break;
             }
         }
+        if (!repetido)
+        {
+            vetUnicos[indexUnicos++] = S[i].codigo;
+        }
+    }
+
+    // Verificar códigos únicos em T
+    for (int i = 0; i < contadorT; i++)
+    {
+        repetido = false;
+        for (int j = 0; j < contadorS; j++)
+        {
+            if (T[i].codigo == S[j].codigo)
+            {
+                repetido = true;
+                break;
+            }
+        }
+        if (!repetido)
+        {
+            vetUnicos[indexUnicos++] = T[i].codigo;
+        }
+    }
+
+    // Imprimir os resultados
+    cout << "Códigos únicos nos arrays S e T:" << endl;
+    for (int i = 0; i < indexUnicos; i++)
+    {
+        cout << vetUnicos[i] << endl;
     }
 }
 
@@ -412,10 +446,10 @@ void buscarCidade(struct Cidade cidade[], int cod)
     {
         cout << "\n\n Cidade encontrada";
         cout << "\nNome da cidade: " << cidade[i].nome;
-        cout << "\nUF: " << cidade[i].UF;
+        cout << "\nUF: " << cidade[i].UF <<endl;
     }
     else
-        cout << "\n\n Especialidade não encontrada";
+        cout << "\n\n Cidade não encontrada";
 }
 
 void buscarEspecialidade(struct Especialidade especialidade[], int cod)
@@ -460,8 +494,8 @@ int main()
         cout << "10. Verificar medicamentos abaixo do estoque mínimo\n";
         cout << "11. Calcular valor total arrecadado com consultas\n";
         cout << "12. Ler dados dos pacientes\n";
-        cout << "13. Buscar uma cidade";
-        cout << "14. Buscar uma especialidade";
+        cout << "13. Buscar uma cidade\n";
+        cout << "14. Buscar uma especialidade\n";
         cout << "0. Sair\n";
         cout << "Escolha uma opção: ";
         cin >> opcao;
@@ -493,7 +527,7 @@ int main()
             lerDadosMedicos(arqSMedico, contadorSMedico);
             lerDadosMedicos(arqTMedico, contadorTMedico);
 
-            verificarSeCodigoMedicoRepetiuNosArrays(arqSMedico, contadorSMedico, arqTMedico, contadorTMedico);
+            // verificarSeCodigoMedicoRepetiuNosArrays(arqSMedico, contadorSMedico, arqTMedico, contadorTMedico);
 
             incluirMedico(arqSMedico, contadorSMedico, arqTMedico, contadorTMedico, arqAMedico, contadorAMedico);
             imprimirEstruturaMedico(arqAMedico, contadorAMedico);
@@ -526,17 +560,17 @@ int main()
             lerDadosPacientes(pacientes, contadorPacientes);
             break;
         case 13:
-            // int codigo;
-            // cout << "Insira o código da cidade que deseja buscar";
-            // cin >> codigo;
-            // buscarCidade(cidades, codigo);
-        case 14:
             int codigo;
-            cout << "Insira o código da especialidade que deseja buscar";
+            cout << "Insira o código da cidade que deseja buscar: ";
             cin >> codigo;
+            buscarCidade(cidades, codigo);
+        case 14:
+            int codigoCidade;
+            cout << "Insira o código da especialidade que deseja buscar: ";
+            cin >> codigoCidade;
             buscarEspecialidade(especialidades, codigo);
         case 0:
-            cout << "Saindo...\n";
+            cout << "\nSaindo...\n";
             break;
         default:
             cout << "Opção inválida!\n";
