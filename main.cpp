@@ -178,59 +178,6 @@ void verificarSeCPFRepetiuNosArrays(struct Paciente S[], int contadorS, struct P
     }
 }
 
-void verificarSeCodigoMedicoRepetiuNosArrays(struct Medico S[], int contadorS, struct Medico T[], int contadorT)
-{
-
-    int vetUnicos[20]; // Array para guardar os códigos únicos dos dois arrays
-    int indexUnicos = 0;
-    
-
-    bool repetido;
-
-    // Verificar códigos únicos em S
-    for (int i = 0; i < contadorS; i++)
-    {
-        repetido = false;
-        for (int j = 0; j < contadorT; j++)
-        {
-            if (S[i].codigo == T[j].codigo)
-            {
-                repetido = true;
-                break;
-            }
-        }
-        if (!repetido)
-        {
-            vetUnicos[indexUnicos++] = S[i].codigo;
-        }
-    }
-
-    // Verificar códigos únicos em T
-    for (int i = 0; i < contadorT; i++)
-    {
-        repetido = false;
-        for (int j = 0; j < contadorS; j++)
-        {
-            if (T[i].codigo == S[j].codigo)
-            {
-                repetido = true;
-                break;
-            }
-        }
-        if (!repetido)
-        {
-            vetUnicos[indexUnicos++] = T[i].codigo;
-        }
-    }
-
-    // Imprimir os resultados
-    cout << "Códigos únicos nos arrays S e T:" << endl;
-    for (int i = 0; i < indexUnicos; i++)
-    {
-        cout << vetUnicos[i] << endl;
-    }
-}
-
 bool verificarSeCPFPacienteRepetiu(struct Paciente Paciente[], string cpf, int index)
 {
 
@@ -526,8 +473,6 @@ int main()
             int contadorSMedico, contadorTMedico, contadorAMedico;
             lerDadosMedicos(arqSMedico, contadorSMedico);
             lerDadosMedicos(arqTMedico, contadorTMedico);
-
-            // verificarSeCodigoMedicoRepetiuNosArrays(arqSMedico, contadorSMedico, arqTMedico, contadorTMedico);
 
             incluirMedico(arqSMedico, contadorSMedico, arqTMedico, contadorTMedico, arqAMedico, contadorAMedico);
             imprimirEstruturaMedico(arqAMedico, contadorAMedico);
