@@ -583,8 +583,9 @@ int main()
         cout << "10. Verificar medicamentos abaixo do estoque mínimo\n";
         cout << "11. Calcular valor total arrecadado com consultas\n";
         cout << "12. Ler dados dos pacientes\n";
-        cout << "13. Buscar uma cidade";
-        cout << "14. Buscar uma especialidade";
+        cout << "13. Buscar uma cidade\n";
+        cout << "14. Buscar uma especialidade\n";
+        cout << "15. Buscar um paciente pelo CPF\n";
         cout << "0. Sair\n";
         cout << "Escolha uma opção: ";
         cin >> opcao;
@@ -669,7 +670,7 @@ int main()
             char pesquisaCPf[11];
             cout << "Insira o CPF que deseja buscar: ";
             cin >> pesquisaCPf;
-            buscarPacientePeloCpf(pacientes, cidades, pesquisaCPf, contadorCidades, contadorPacientes);
+            buscarPacientePeloCpf(pacientes, cidades, pesquisaCPf, quantidade, contadorPacientes);
         case 0:
             cout << "Saindo...\n";
             break;
