@@ -71,7 +71,7 @@ struct Consulta
     int qtde_medicamento;
 };
 
-void lerDadosCidades(Cidade cidade[], int contador)
+void lerDadosCidades(Cidade cidade[], int &contador)
 {
     int i = 0;
     for (int saida = 1; i < 20 && saida != 0; i++)
@@ -247,9 +247,16 @@ void lerDadosPacientes(struct Paciente Paciente[], int &contador)
         {
             cout << "\n\n CPF do Paciente " << (i + 1) << ": ";
             cin >> Paciente[i].CPF;
+
             if (!verificarSeCPFPacienteRepetiu(Paciente, Paciente[i].CPF, i))
             {
                 cout << "CPF n repetiu: ";
+                cout << "\nNome: ";
+                cin >> Paciente[i].nome;
+                cout << "\nCodigo da cidade: ";
+                cin >> Paciente[i].codigo_cidade;
+                cout << "\nEndereco: ";
+                cin >> Paciente[i].endereco;
             }
             else
             {
@@ -457,7 +464,7 @@ void excluirPaciente(struct Paciente S[], int contS, int T[], int contT, struct 
     }
     else
     {
-        cout << "\n Erro ao excluir paciente"<<endl;
+        cout << "\n Erro ao excluir paciente" << endl;
     }
 }
 
@@ -479,6 +486,7 @@ void agendarConsulta(Consulta consulta[], int &contadorConsulta, Paciente pacien
             {
                 if (strcmp(consulta[i].cpf_paciente, pacientes[j].CPF) == 0)
                 {
+                    cout << "CPF do paciente encontrado: " << pacientes[j].CPF << " Codigo do paciente: " << pacientes[j].codigo << endl;
                     pacienteEncontrado = true;
                     break;
                 }
@@ -486,7 +494,7 @@ void agendarConsulta(Consulta consulta[], int &contadorConsulta, Paciente pacien
             if (!pacienteEncontrado)
             {
                 cout << "Paciente nao encontrado." << endl;
-                i--;
+                break;
             }
 
             // Procura medico
@@ -497,6 +505,7 @@ void agendarConsulta(Consulta consulta[], int &contadorConsulta, Paciente pacien
             {
                 if (consulta[i].cod_medico == medicos[j].codigo)
                 {
+                    cout << "Codigo do medico encontrado: " << medicos[j].codigo << endl;
                     medicoEncontrado = true;
                     break;
                 }
@@ -504,7 +513,7 @@ void agendarConsulta(Consulta consulta[], int &contadorConsulta, Paciente pacien
             if (!medicoEncontrado)
             {
                 cout << "Medico nao encontrado." << endl;
-                i--;
+                break;
             }
 
             cout << "Insira o dia ";
@@ -522,6 +531,7 @@ void agendarConsulta(Consulta consulta[], int &contadorConsulta, Paciente pacien
             {
                 if (consulta[i].cod_CID == cids[j].codigo)
                 {
+                    cout << "Codigo do CID encontrado: " << cids[j].codigo << endl;
                     cidEncontrado = true;
                     break;
                 }
@@ -529,7 +539,7 @@ void agendarConsulta(Consulta consulta[], int &contadorConsulta, Paciente pacien
             if (!cidEncontrado)
             {
                 cout << "cid nao encontrado." << endl;
-                i--;
+                break;
             }
 
             // Procura Medicamento
@@ -540,6 +550,7 @@ void agendarConsulta(Consulta consulta[], int &contadorConsulta, Paciente pacien
             {
                 if (consulta[i].cod_medicamento == medicamentos[j].codigo)
                 {
+                    cout << "Codigo do medicamento encontrado: " << medicamentos[j].codigo << endl;
                     medicamentoEncontrado = true;
                     break;
                 }
@@ -547,7 +558,7 @@ void agendarConsulta(Consulta consulta[], int &contadorConsulta, Paciente pacien
             if (!medicamentoEncontrado)
             {
                 cout << "medicamento nao encontrado." << endl;
-                i--;
+                break;
             }
 
             /*
@@ -591,15 +602,22 @@ void buscarPacientePeloCpf(struct Paciente paciente[], Cidade cidade[], int &con
         {
             cout << "\n\n Paciente encontrado\n";
             cout << "\tCodigo: " << paciente[i].codigo;
-            cout << "\tNome: " << paciente[i].nome;
+            cout << "\tNome: " << paciente[i].nome << endl;
             for (int j = 0; j < contCidade; j++)
             {
                 if (paciente[i].codigo_cidade == cidade[j].codigo)
                 {
                     cout << "\tCidade: " << cidade[j].nome;
-                    cout << "\tUF: " << cidade[j].UF;
+                    cout << "\tUF: " << cidade[j].UF << endl;
                     j = contCidade;
                     i = contPaciente;
+                }
+                else
+                {
+                    if (j == contCidade - 1)
+                    {
+                        cout << "\n\n Cidade não encontrada! " << endl;
+                    }
                 }
             }
             pacienteEncontrado = true;
