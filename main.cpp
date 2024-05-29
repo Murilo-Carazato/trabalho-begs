@@ -412,6 +412,7 @@ void incluirPaciente(struct Paciente S[], int contadorS, struct Paciente T[], in
 void excluirPaciente(struct Paciente S[], int contS, int T[], int contT, struct Paciente A[], int &contA)
 {
     int i = 0, j = 0, k = 0; // i (contador de S) j (contador de T) k (contador de A)
+    int erro = 0;
     for (; j < contT; i++)
     {
         if (S[i].codigo != T[j])
@@ -425,6 +426,8 @@ void excluirPaciente(struct Paciente S[], int contS, int T[], int contT, struct 
         }
         else
         {
+            erro = 1;
+
             j++;
         }
     }
@@ -439,14 +442,22 @@ void excluirPaciente(struct Paciente S[], int contS, int T[], int contT, struct 
         k++;
     }
     contA = k;
-    cout << "\n\nLista dos registros de paciente após exclusão: " << endl;
-    for (int i = 0; i < contA; i++)
+
+    if (erro != 1)
     {
-        cout << "\nCodigo: " << A[i].codigo;
-        cout << "\tNome: " << A[i].nome;
-        cout << "\tEndereco: " << A[i].endereco;
-        cout << "\tCodigo_Cidade: " << A[i].codigo_cidade;
-        cout << "\tCPF: " << A[i].CPF;
+        cout << "\n\nLista dos registros de paciente após exclusão: " << endl;
+        for (int i = 0; i < contA; i++)
+        {
+            cout << "\nCodigo: " << A[i].codigo;
+            // cout << "\tNome: " << A[i].nome;
+            // cout << "\tEndereco: " << A[i].endereco;
+            // cout << "\tCodigo_Cidade: " << A[i].codigo_cidade;
+            cout << "\tCPF: " << A[i].CPF;
+        }
+    }
+    else
+    {
+        cout << "\n Erro ao excluir paciente"<<endl;
     }
 }
 
@@ -496,9 +507,11 @@ void agendarConsulta(Consulta consulta[], int &contadorConsulta, Paciente pacien
                 i--;
             }
 
-            cout << "Insira a data (dia mes ano) ";
+            cout << "Insira o dia ";
             cin >> consulta[i].data.dia;
+            cout << "Insira o mes ";
             cin >> consulta[i].data.mes;
+            cout << "Insira o ano ";
             cin >> consulta[i].data.ano;
 
             // Procura CID
@@ -562,19 +575,19 @@ void calcularValorTotalConsultas()
     // Implemente a função para calcular o valor total arrecadado com consultas
 }
 
-void buscarPacientePeloCpf(struct Paciente paciente[], Cidade cidade[], int contCidade, int contPaciente)
+void buscarPacientePeloCpf(struct Paciente paciente[], Cidade cidade[], int &contCidade, int &contPaciente)
 {
-    char* cpf;
-    int i = 0;
-    cout << "contPaciente: " << contPaciente;
+    char cpf[11];
+
+    cout << "Insira o CPF que deseja buscar: ";
+    cin >> cpf;
+    cout << "\ncontPaciente: " << contPaciente;
     cout << "\ncontCidade: " << contCidade;
 
-    cout << "\n digite o cpf: ";
-    cin >> cpf;
-    for (; i < contPaciente; i++)
+    bool pacienteEncontrado = false;
+    for (int i = 0; i < contPaciente; i++)
     {
-        cout << "\npaciente[i].CPF = " << paciente[i].CPF << endl;
-        if (strcmp(paciente[i].CPF, cpf) == 0) // Compara se chars são iguais
+        if (strcmp(cpf, paciente[i].CPF) == 0) // Compara se chars são iguais
         {
             cout << "\n\n Paciente encontrado\n";
             cout << "\tCodigo: " << paciente[i].codigo;
@@ -589,9 +602,13 @@ void buscarPacientePeloCpf(struct Paciente paciente[], Cidade cidade[], int cont
                     i = contPaciente;
                 }
             }
+            pacienteEncontrado = true;
+            break;
         }
-        else
-            cout << "\n\n Paciente com CPF: " << cpf << " não existe.\n";
+    }
+    if (!pacienteEncontrado)
+    {
+        cout << "\n\n Paciente com CPF: " << cpf << " não existe.\n";
     }
 }
 
@@ -653,10 +670,9 @@ int main()
         cout << "9. Consultar dados de um medicamento\n";
         cout << "10. Verificar medicamentos abaixo do estoque mínimo\n";
         cout << "11. Calcular valor total arrecadado com consultas\n";
-        cout << "12. Ler dados dos pacientes\n";
-        cout << "13. Buscar uma cidade\n";
-        cout << "14. Buscar uma especialidade\n";
-        cout << "15. Buscar um paciente pelo CPF\n";
+        cout << "12. Buscar uma cidade\n";
+        cout << "13. Buscar uma especialidade\n";
+        cout << "14. Buscar um paciente pelo CPF\n";
         cout << "0. Sair\n";
         cout << "Escolha uma opção: ";
         cin >> opcao;
@@ -696,16 +712,18 @@ int main()
             incluirPaciente(arqSPaciente, contadorS, arqTPaciente, contadorT, arqAPaciente, contadorAPaciente);
             imprimirEstruturaPaciente(arqAPaciente, contadorAPaciente);
             break;
-        case 7: // nao entendi
-            int arqT[20];
-            cout << "arqT[contadorT-1] = " << arqT[0 - 1];
-            for (contadorT = 0; contadorT < 20 && arqT[contadorT - 1] >= 0; contadorT++)
+        case 7:
+            cout << "contS " << contadorS << "contT " << contadorT << "contA " << contadorAPaciente;
+
+            int arqT[20], contadorTExclusao;
+            cout << "arqT[contadorTExclusao-1] = " << arqT[0 - 1];
+            for (contadorTExclusao = 0; contadorTExclusao < 20 && arqT[contadorTExclusao - 1] >= 0; contadorTExclusao++)
             {
                 cout << "\nInforme o codigo do paciente a ser excluido (finalize com -1): ";
-                cin >> arqT[contadorT];
+                cin >> arqT[contadorTExclusao];
             }
-            contadorT--;
-            excluirPaciente(arqSPaciente, contadorS, arqT, contadorT, arqAPaciente, contadorAPaciente);
+            contadorTExclusao--;
+            excluirPaciente(arqAPaciente, contadorAPaciente, arqT, contadorTExclusao, arqAPaciente, contadorAPaciente);
             break;
         case 8:
             int contadorConsulta;
@@ -730,26 +748,19 @@ int main()
             calcularValorTotalConsultas();
             break;
         case 12:
-            int contadorPacientes;
-            lerDadosPacientes(pacientes, contadorPacientes);
-            break;
-        case 13:
             int codigoCidade;
             cout << "Insira o código da cidade que deseja buscar: ";
             cin >> codigoCidade;
             buscarCidade(cidades, codigoCidade);
             break;
-        case 14:
+        case 13:
             int codigoEspecialidades;
             cout << "Insira o código da especialidade que deseja buscar: ";
             cin >> codigoEspecialidades;
             buscarEspecialidade(especialidades, codigoEspecialidades);
             break;
-        case 15:
-            // char pesquisaCPf[11];
-            // cout << "Insira o CPF que deseja buscar: ";
-            // cin >> pesquisaCPf;
-            buscarPacientePeloCpf(pacientes, cidades, quantidade, contadorS);
+        case 14:
+            buscarPacientePeloCpf(arqAPaciente, cidades, contadorCidades, contadorAPaciente);
         case 0:
             cout << "Saindo...\n";
             break;
