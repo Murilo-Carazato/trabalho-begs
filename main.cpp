@@ -121,13 +121,14 @@ void lerDadosCID(struct CID CID[], int &contador)
         cin >> CID[i].codigo;
         if (CID[i].codigo > 0)
         {
+            cout << "\n\n Descrição do CID: ";
+            cin >> CID[i].descricao;
         }
         else
             saida = 0;
     }
     contador = i - 1;
 
-    // imprimirEstruturaPaciente(CID, contador);
 }
 
 // void imprimirEstruturaPaciente(struct Estrutura Estrutura[], int contador)
@@ -304,7 +305,7 @@ void lerDadosMedicos(struct Medico medico[], int &contador)
         {
             if (!verificarSeCodigoMedicoRepetiu(medico, medico[i].codigo, i)) // aqui tbm verifica se o codigo n repetiu enquanto um array está sendo lido
             {
-                cout << "i: "<<i<<endl;
+                cout << "i: " << i << endl;
                 cout << "codigo n repetiu: " << endl;
                 cout << "Nome: " << endl;
                 cin >> medico[i].nome;
@@ -610,7 +611,6 @@ void buscarMedicoPeloCodigo(struct Medico Medico[], Especialidade Especialidade[
             cout << "\tNome: " << Medico[i].nome << endl;
             for (int j = 0; j < contEspecialidade; j++)
             {
-               
 
                 if (Medico[i].codigo_especialidade == Especialidade[j].codigo)
                 {
@@ -678,6 +678,31 @@ void buscarPacientePeloCpf(struct Paciente paciente[], Cidade cidade[], int &con
     }
 }
 
+void buscarCIDPeloCodigo(struct CID Cid[], int &contCid)
+{
+    int cod;
+    cout << "Insira o cod do CID que deseja buscar: ";
+    cin >> cod;
+
+    bool CidEncontrado = false;
+    for (int i = 0; i < contCid; i++)
+    {
+        if (cod == Cid[i].codigo) // Compara se chars são iguais
+        {
+            cout << "\n\n Cid encontrado\n";
+            cout << "\tCodigo: " << Cid[i].codigo;
+            cout << "\tDescricao: " << Cid[i].descricao;
+
+            CidEncontrado = true;
+            break;
+        }
+    }
+    if (!CidEncontrado)
+    {
+        cout << "\n\n Cid com cod: " << cod << " não existe.\n";
+    }
+}
+
 void buscarCidade(struct Cidade cidade[], int cod)
 {
     int i = 0;
@@ -712,8 +737,8 @@ int main()
 {
     setlocale(LC_ALL, "Portuguese");
 
-    struct Medicamento medicamentos[2];
-    struct CID cids[2];
+    struct Medicamento medicamentos[20];
+    struct CID cids[20];
     struct Paciente pacientes[20], arqSPaciente[20], arqTPaciente[20], arqAPaciente[25];
     struct Medico medicos[20], arqSMedico[20], arqTMedico[20], arqAMedico[25];
 
@@ -740,6 +765,7 @@ int main()
         cout << "13. Buscar uma especialidade\n";
         cout << "14. Buscar um paciente pelo CPF\n";
         cout << "15. Buscar um medico pelo codigo\n";
+        cout << "16. Buscar CID pelo codigo\n";
         cout << "0. Sair\n";
         cout << "Escolha uma opção: ";
         cin >> opcao;
@@ -833,7 +859,9 @@ int main()
         case 15:
             buscarMedicoPeloCodigo(arqAMedico, especialidades, contadorEspecialidades, contadorAMedico);
             break;
-
+        case 16:
+            buscarCIDPeloCodigo(cids, contadorCID);
+            break;
         case 0:
             cout << "Saindo...\n";
             break;
