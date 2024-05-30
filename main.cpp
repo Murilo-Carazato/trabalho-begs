@@ -128,7 +128,6 @@ void lerDadosCID(struct CID CID[], int &contador)
             saida = 0;
     }
     contador = i - 1;
-
 }
 
 // void imprimirEstruturaPaciente(struct Estrutura Estrutura[], int contador)
@@ -175,6 +174,16 @@ void lerDadosMedicamentos(struct Medicamento Medicamento[], int &contador)
         cin >> Medicamento[i].codigo;
         if (Medicamento[i].codigo > 0)
         {
+            cout << "\n\n Descrição do Medicamento: ";
+            cin >> Medicamento[i].descricao;
+            cout << "\n\n Quantidade em estoque: ";
+            cin >> Medicamento[i].quant_estoque;
+            // cout << "\n\n Estoque mínimo: ";
+            // cin >> Medicamento[i].estoque_minimo;
+            // cout << "\n\n Estoque máximo: ";
+            // cin >> Medicamento[i].estoque_maximo;
+            // cout << "\n\n Preço unitário: ";
+            // cin >> Medicamento[i].preco_unitario;
         }
         else
             saida = 0;
@@ -476,8 +485,8 @@ void excluirPaciente(struct Paciente S[], int contS, int T[], int contT, struct 
     }
 }
 
-void agendarConsulta(Consulta consulta[], int &contadorConsulta, Paciente pacientes[], int &contadorPaciente, Medico medicos[], int &contadorMedico, CID cids[], int &contadorCid, Medicamento medicamentos[], int &contadorMedicamento)
-{
+void agendarConsulta(Consulta consulta[], int &contadorConsulta, Medicamento medicamentos[], int &contadorMedicamento)
+{ // paciente, medico, cid, medicamento
 
     int i = 0;
     for (int saida = 1; i < 20 && saida != 0; i++)
@@ -486,69 +495,6 @@ void agendarConsulta(Consulta consulta[], int &contadorConsulta, Paciente pacien
         cin >> consulta[i].codigo;
         if (consulta[i].codigo > 0)
         {
-            // Procura paciente
-            cout << "CPF do paciente: ";
-            cin >> consulta[i].cpf_paciente;
-            bool pacienteEncontrado = false;
-            for (int j = 0; j < contadorPaciente; j++)
-            {
-                if (strcmp(consulta[i].cpf_paciente, pacientes[j].CPF) == 0)
-                {
-                    cout << "CPF do paciente encontrado: " << pacientes[j].CPF << " Codigo do paciente: " << pacientes[j].codigo << endl;
-                    pacienteEncontrado = true;
-                    break;
-                }
-            }
-            if (!pacienteEncontrado)
-            {
-                cout << "Paciente nao encontrado." << endl;
-                break;
-            }
-
-            // Procura medico
-            cout << "código do medico: ";
-            cin >> consulta[i].cod_medico;
-            bool medicoEncontrado = false;
-            for (int j = 0; j < contadorMedico; j++)
-            {
-                if (consulta[i].cod_medico == medicos[j].codigo)
-                {
-                    cout << "Codigo do medico encontrado: " << medicos[j].codigo << endl;
-                    medicoEncontrado = true;
-                    break;
-                }
-            }
-            if (!medicoEncontrado)
-            {
-                cout << "Medico nao encontrado." << endl;
-                break;
-            }
-
-            cout << "Insira o dia ";
-            cin >> consulta[i].data.dia;
-            cout << "Insira o mes ";
-            cin >> consulta[i].data.mes;
-            cout << "Insira o ano ";
-            cin >> consulta[i].data.ano;
-
-            // Procura CID
-            cout << "código do CID: ";
-            cin >> consulta[i].cod_CID;
-            bool cidEncontrado = false;
-            for (int j = 0; j < contadorCid; j++)
-            {
-                if (consulta[i].cod_CID == cids[j].codigo)
-                {
-                    cout << "Codigo do CID encontrado: " << cids[j].codigo << endl;
-                    cidEncontrado = true;
-                    break;
-                }
-            }
-            if (!cidEncontrado)
-            {
-                cout << "cid nao encontrado." << endl;
-                break;
-            }
 
             // Procura Medicamento
             cout << "código do medicamento: ";
@@ -558,8 +504,24 @@ void agendarConsulta(Consulta consulta[], int &contadorConsulta, Paciente pacien
             {
                 if (consulta[i].cod_medicamento == medicamentos[j].codigo)
                 {
-                    cout << "Codigo do medicamento encontrado: " << medicamentos[j].codigo << endl;
                     medicamentoEncontrado = true;
+
+                    cout << "Codigo do medicamento encontrado! " << endl;
+                    cout << "Quantidade do medicamento que foi usado: ";
+                    cin >> consulta[i].qtde_medicamento;
+
+                    if (consulta[i].qtde_medicamento > medicamentos[j].quant_estoque)
+                    {
+                        cout << "Quantidade de medicamento no estoque é insuficiente." << endl;
+                        break;
+                    }
+                    else
+                    {
+                        medicamentos[j].quant_estoque = medicamentos[j].quant_estoque - consulta[i].qtde_medicamento;
+                        cout << "Quantidade de medicamento disponivel em estoque apos a utilizacao de medicamentos: " << medicamentos[j].quant_estoque << endl;
+                        break;
+                    }
+
                     break;
                 }
             }
@@ -578,6 +540,125 @@ void agendarConsulta(Consulta consulta[], int &contadorConsulta, Paciente pacien
     }
     contadorConsulta = i - 1;
 }
+
+// void agendarConsulta(Consulta consulta[], int &contadorConsulta, Paciente pacientes[], int &contadorPaciente, Medico medicos[], int &contadorMedico, CID cids[], int &contadorCid, Medicamento medicamentos[], int &contadorMedicamento)
+// {//paciente, medico, cid, medicamento
+
+//     int i = 0;
+//     for (int saida = 1; i < 20 && saida != 0; i++)
+//     {
+//         cout << "\n\nCodigo do consulta " << (i + 1) << ": ";
+//         cin >> consulta[i].codigo;
+//         if (consulta[i].codigo > 0)
+//         {
+//             // Procura paciente
+//             cout << "CPF do paciente: ";
+//             cin >> consulta[i].cpf_paciente;
+//             bool pacienteEncontrado = false;
+//             for (int j = 0; j < contadorPaciente; j++)
+//             {
+//                 if (strcmp(consulta[i].cpf_paciente, pacientes[j].CPF) == 0)
+//                 {
+//                     cout << "CPF do paciente encontrado: " << pacientes[j].CPF << " Codigo do paciente: " << pacientes[j].codigo << endl;
+//                     pacienteEncontrado = true;
+//                     break;
+//                 }
+//             }
+//             if (!pacienteEncontrado)
+//             {
+//                 cout << "Paciente nao encontrado." << endl;
+//                 break;
+//             }
+
+//             // Procura medico
+//             cout << "código do medico: ";
+//             cin >> consulta[i].cod_medico;
+//             bool medicoEncontrado = false;
+//             for (int j = 0; j < contadorMedico; j++)
+//             {
+//                 if (consulta[i].cod_medico == medicos[j].codigo)
+//                 {
+//                     cout << "Codigo do medico encontrado: " << medicos[j].codigo << endl;
+//                     medicoEncontrado = true;
+//                     break;
+//                 }
+//             }
+//             if (!medicoEncontrado)
+//             {
+//                 cout << "Medico nao encontrado." << endl;
+//                 break;
+//             }
+
+//             cout << "Insira o dia ";
+//             cin >> consulta[i].data.dia;
+//             cout << "Insira o mes ";
+//             cin >> consulta[i].data.mes;
+//             cout << "Insira o ano ";
+//             cin >> consulta[i].data.ano;
+
+//             // Procura CID
+//             cout << "código do CID: ";
+//             cin >> consulta[i].cod_CID;
+//             bool cidEncontrado = false;
+//             for (int j = 0; j < contadorCid; j++)
+//             {
+//                 if (consulta[i].cod_CID == cids[j].codigo)
+//                 {
+//                     cout << "Codigo do CID encontrado: " << cids[j].codigo << endl;
+//                     cidEncontrado = true;
+//                     break;
+//                 }
+//             }
+//             if (!cidEncontrado)
+//             {
+//                 cout << "cid nao encontrado." << endl;
+//                 break;
+//             }
+
+//             // Procura Medicamento
+//             cout << "código do medicamento: ";
+//             cin >> consulta[i].cod_medicamento;
+//             bool medicamentoEncontrado = false;
+//             for (int j = 0; j < contadorMedicamento; j++)
+//             {
+//                 if (consulta[i].cod_medicamento == medicamentos[j].codigo)
+//                 {
+//                     cout << "Codigo do medicamento encontrado: " << medicamentos[j].codigo << endl;
+//                     cout << "Quantidade do medicamento que foi usado: " << medicamentos[j].codigo << endl;
+//                     cin >> consulta[i].qtde_medicamento;
+
+//                     if (consulta[i].qtde_medicamento > medicamentos[j].quant_estoque)
+//                     {
+//                         cout << "Quantidade de medicamento no estoque é insuficiente." << endl;
+//                         break;
+//                     }
+//                     else
+//                     {
+//                         cout << "Quantidade de medicamento disponivel em estoque apos a utilizacao de medicamentos: " <<consulta[i].qtde_medicamento - medicamentos[j].estoque_minimo << endl;
+//                         break;
+//                     }
+
+//                     cin >> medicamentos[i].quant_estoque;
+
+//                     medicamentoEncontrado = true;
+//                     break;
+//                 }
+//             }
+//             if (!medicamentoEncontrado)
+//             {
+//                 cout << "medicamento nao encontrado." << endl;
+//                 break;
+//             }
+
+//             /*
+//             int qtde_medicamento? ;
+//             */
+//         }
+//         else
+//             saida = 0;
+//     }
+//     contadorConsulta = i - 1;
+// }
 
 void consultarMedicamento()
 {
@@ -733,6 +814,31 @@ void buscarEspecialidade(struct Especialidade especialidade[], int cod)
         cout << "\n\n Especialidade não encontrada";
 }
 
+void buscarMedicamentoPeloCodigo(struct Medicamento Medicamento[], int &contMedicamento)
+{
+    int cod;
+    cout << "Insira o cod do Medicamento que deseja buscar: ";
+    cin >> cod;
+
+    bool MedicamentoEncontrado = false;
+    for (int i = 0; i < contMedicamento; i++)
+    {
+        if (cod == Medicamento[i].codigo) // Compara se chars são iguais
+        {
+            cout << "\n\n Medicamento encontrado\n";
+            cout << "\tCodigo: " << Medicamento[i].codigo;
+            cout << "\tDescricao: " << Medicamento[i].descricao;
+
+            MedicamentoEncontrado = true;
+            break;
+        }
+    }
+    if (!MedicamentoEncontrado)
+    {
+        cout << "\n\n Medicamento com cod: " << cod << " não existe.\n";
+    }
+}
+
 int main()
 {
     setlocale(LC_ALL, "Portuguese");
@@ -766,6 +872,7 @@ int main()
         cout << "14. Buscar um paciente pelo CPF\n";
         cout << "15. Buscar um medico pelo codigo\n";
         cout << "16. Buscar CID pelo codigo\n";
+        cout << "17. Buscar medicamento pelo codigo\n";
         cout << "0. Sair\n";
         cout << "Escolha uma opção: ";
         cin >> opcao;
@@ -820,15 +927,16 @@ int main()
             break;
         case 8:
             int contadorConsulta;
-            agendarConsulta(consultas, contadorConsulta, arqAPaciente, contadorAPaciente, arqAMedico, contadorAMedico, cids, contadorCID, medicamentos, contadorMedicamentos);
+            agendarConsulta(consultas, contadorConsulta, medicamentos, contadorMedicamentos);
+            // agendarConsulta(consultas, contadorConsulta, arqAPaciente, contadorAPaciente, arqAMedico, contadorAMedico, cids, contadorCID, medicamentos, contadorMedicamentos);
 
-            cout << "\n\nLista dos Registros" << endl;
-            for (int i = 0; i < contadorConsulta; i++)
-            {
+            // cout << "\n\nLista dos Registros" << endl;
+            // for (int i = 0; i < contadorConsulta; i++)
+            // {
 
-                cout << "valores: " << consultas[i].cod_medicamento << endl;
-            }
-            cout << "qnt: " << contadorConsulta << endl;
+            //     cout << "valores: " << consultas[i].cod_medicamento << endl;
+            // }
+            // cout << "qnt: " << contadorConsulta << endl;
 
             break;
         case 9:
@@ -861,6 +969,9 @@ int main()
             break;
         case 16:
             buscarCIDPeloCodigo(cids, contadorCID);
+            break;
+        case 17:
+            buscarMedicamentoPeloCodigo(medicamentos, contadorMedicamentos);
             break;
         case 0:
             cout << "Saindo...\n";
