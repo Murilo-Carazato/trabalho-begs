@@ -178,12 +178,12 @@ void lerDadosMedicamentos(struct Medicamento Medicamento[], int &contador)
             cin >> Medicamento[i].descricao;
             cout << "\n\n Quantidade em estoque: ";
             cin >> Medicamento[i].quant_estoque;
-            // cout << "\n\n Estoque mínimo: ";
-            // cin >> Medicamento[i].estoque_minimo;
-            // cout << "\n\n Estoque máximo: ";
-            // cin >> Medicamento[i].estoque_maximo;
-            // cout << "\n\n Preço unitário: ";
-            // cin >> Medicamento[i].preco_unitario;
+            cout << "\n\n Estoque mínimo: ";
+            cin >> Medicamento[i].estoque_minimo;
+            cout << "\n\n Estoque máximo: ";
+            cin >> Medicamento[i].estoque_maximo;
+            cout << "\n\n Preço unitário: ";
+            cin >> Medicamento[i].preco_unitario;
         }
         else
             saida = 0;
@@ -499,6 +499,7 @@ void agendarConsulta(Consulta consulta[], int &contadorConsulta, Medicamento med
             // Procura Medicamento
             cout << "código do medicamento: ";
             cin >> consulta[i].cod_medicamento;
+
             bool medicamentoEncontrado = false;
             for (int j = 0; j < contadorMedicamento; j++)
             {
@@ -512,8 +513,8 @@ void agendarConsulta(Consulta consulta[], int &contadorConsulta, Medicamento med
 
                     if (consulta[i].qtde_medicamento > medicamentos[j].quant_estoque)
                     {
-                        cout << "Quantidade de medicamento no estoque é insuficiente." << endl;
-                        break;
+                        cout << "Quantidade de medicamento no estoque é insuficiente. (estoque: " << medicamentos[j].quant_estoque << ")" << endl;
+                        i--;
                     }
                     else
                     {
@@ -660,19 +661,89 @@ void agendarConsulta(Consulta consulta[], int &contadorConsulta, Medicamento med
 //     contadorConsulta = i - 1;
 // }
 
-void consultarMedicamento()
+void consultarMedicamento(Medicamento Medicamento[], int &contador)
 {
-    // Implemente a função para consultar os dados de um medicamento
+    int cod;
+    cout << "Insira o codigo do medicamento que deseja buscar: ";
+    cin >> cod;
+
+    for (int i = 0; i < contador; i++)
+    {
+        if (cod == Medicamento[i].codigo)
+        {
+            cout << "\n\n Medicamento encontrado\n";
+            cout << "\t Codigo: " << Medicamento[i].codigo;
+            cout << "\t Descricao: " << Medicamento[i].descricao;
+            cout << "\t Quantidade em estoque: " << Medicamento[i].quant_estoque;
+            cout << "\t Estoque mínimo: " << Medicamento[i].estoque_minimo;
+            cout << "\t Estoque máximo: " << Medicamento[i].estoque_maximo;
+            cout << "\t Preço unitário: " << Medicamento[i].preco_unitario;
+            cout << "\t Valor total em estoque: " << Medicamento[i].preco_unitario * Medicamento[i].quant_estoque << endl;
+        }
+        else
+        {
+            if (i == contador - 1)
+            {
+                cout << "\n\n Medicamento não encontrado! " << endl;
+            }
+        }
+    }
 }
 
-void verificarEstoqueMinimo()
+void verificarEstoqueMinimo(Medicamento Medicamento[], int &contador)
 {
-    // Implemente a função para verificar os medicamentos abaixo do estoque mínimo
+    float totalDaCompra = 0;
+    for (int i = 0; i < contador; i++)
+    {
+        if (Medicamento[i].quant_estoque < Medicamento[i].estoque_minimo)
+        {
+            int quantidadeASerComprada = Medicamento[i].estoque_maximo - Medicamento[i].quant_estoque;
+
+            totalDaCompra += quantidadeASerComprada * Medicamento[i].preco_unitario;
+
+            cout << "\n\n Medicamento com estoque abaixo do mínimo\n";
+            cout << "\t Codigo: " << Medicamento[i].codigo;
+            cout << "\t Descricao: " << Medicamento[i].descricao;
+            cout << "\t Quantidade em estoque: " << Medicamento[i].quant_estoque;
+            // cout << "\t Estoque mínimo: " << Medicamento[i].estoque_minimo;
+            cout << "\t Estoque máximo: " << Medicamento[i].estoque_maximo;
+            // cout << "\t Preço unitário: " << Medicamento[i].preco_unitario;
+            cout << "\t Quantidade a ser comprada: " << quantidadeASerComprada;
+            cout << "\t Valor da compra do medicamento " << Medicamento[i].descricao << ": " << quantidadeASerComprada * Medicamento[i].preco_unitario;
+        }
+        else
+        {
+            if (i == contador - 1)
+            {
+                cout << "\n\n Nenhum medicamento com estoque abaixo do mínimo\n";
+            }
+        }
+    }
+    cout << "\t Valor total da compra: " << totalDaCompra;
 }
 
-void calcularValorTotalConsultas()
+void calcularValorTotalConsultas(Consulta Consulta[], int &contadorConsulta, Medicamento Medicamento[], int &contadorMedicamento)
 {
-    // Implemente a função para calcular o valor total arrecadado com consultas
+    const float valorBrutoConsulta = 100;
+    float valorLiquidoConsulta = 0;
+    float totalDaCompra = 0;
+
+    for (int i = 0; i < contadorConsulta; i++)
+    {
+        for (int j = 0; j < contadorMedicamento; j++)
+        {
+            if (Consulta[i].cod_medicamento == Medicamento[j].codigo)
+            {
+
+                totalDaCompra += Consulta[i].qtde_medicamento * Medicamento[j].preco_unitario;
+                cout << "\t Custo dos medicamentos: " << totalDaCompra;
+            }
+        }
+        valorLiquidoConsulta += valorBrutoConsulta + totalDaCompra;
+        cout << "\n\n Valor total da consulta: " << valorLiquidoConsulta;
+    }
+    
+    
 }
 
 void buscarMedicoPeloCodigo(struct Medico Medico[], Especialidade Especialidade[], int &contEspecialidade, int &contMedico)
@@ -823,7 +894,7 @@ void buscarMedicamentoPeloCodigo(struct Medicamento Medicamento[], int &contMedi
     bool MedicamentoEncontrado = false;
     for (int i = 0; i < contMedicamento; i++)
     {
-        if (cod == Medicamento[i].codigo) // Compara se chars são iguais
+        if (cod == Medicamento[i].codigo)
         {
             cout << "\n\n Medicamento encontrado\n";
             cout << "\tCodigo: " << Medicamento[i].codigo;
@@ -940,13 +1011,13 @@ int main()
 
             break;
         case 9:
-            consultarMedicamento();
+            consultarMedicamento(medicamentos, contadorMedicamentos);
             break;
         case 10:
-            verificarEstoqueMinimo();
+            verificarEstoqueMinimo(medicamentos, contadorMedicamentos);
             break;
         case 11:
-            calcularValorTotalConsultas();
+            calcularValorTotalConsultas(consultas, contadorConsulta, medicamentos, contadorMedicamentos);
             break;
         case 12:
             int codigoCidade;
